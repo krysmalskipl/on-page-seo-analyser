@@ -1,36 +1,15 @@
-function handleResults(results) {
-    document.getElementById('title').innerText = results[0].result.title;
-    document.getElementById('metaDescription').innerText = results[0].result.metaDescription;
-    let h1s = document.getElementById('h1s');
-    results[0].result.h1s.forEach(h1 => {
-        let li = document.createElement('li');
-        li.innerText = h1;
-        h1s.appendChild(li);
-    });
-    let h2s = document.getElementById('h2s');
-    results[0].result.h2s.forEach(h2 => {
-        let li = document.createElement('li');
-        li.innerText = h2;
-        h2s.appendChild(li);
-    });
-}
-
 function inContent() {
     let title = document.querySelector("title").innerText;
     let metaDescription = document.querySelector("meta[name='description']")
         ? document.querySelector("meta[name='description']").getAttribute('content')
         : 'Brak opisu';
     let headers = [];
-    let headersCount = {};
-
     for (let i = 1; i <= 6; i++) {
-        let headerElements = Array.from(document.getElementsByTagName(`H${i}`));
-        headersCount[`H${i}`] = headerElements.length;
-        let headerContent = headerElements.map(h => ({
+        let headerElements = Array.from(document.getElementsByTagName(`H${i}`)).map(h => ({
             type: `H${i}`,
             text: h.innerText
         }));
-        headers = headers.concat(headerContent);
+        headers = headers.concat(headerElements);
     }
 
     let canonicalTag = document.querySelector("link[rel='canonical']")
@@ -50,8 +29,11 @@ function inContent() {
         .filter(link => link.hasAttribute('hreflang'))
         .map(link => ({ lang: link.getAttribute('hreflang'), url: link.getAttribute('href') }));
 
+    let text = document.body.innerText;
+    let charCount = text.length;
+    let wordCount = text.split(/\s+/).length;
 
-    return { title, metaDescription, headers, headersCount, canonicalTag, hasGoogleAnalytics, hasGoogleTagManager, hasHttps, totalImages, imagesWithAlt, imagesWithoutAlt, imagesWithoutAltPercentage, hreflangs };
+    return { title, metaDescription, headers, canonicalTag, hasGoogleAnalytics, hasGoogleTagManager, hasHttps, totalImages, imagesWithAlt, imagesWithoutAlt, imagesWithoutAltPercentage, hreflangs, charCount, wordCount };
 }
 
 function updateContent(analysis) {
@@ -62,6 +44,8 @@ function updateContent(analysis) {
     document.getElementById('totalImages').textContent = `Total images: ${analysis.totalImages}`;
     document.getElementById('imagesWithAlt').textContent = `Images with 'alt': ${analysis.imagesWithAlt}`;
     document.getElementById('imagesWithoutAlt').textContent = `Images without 'alt': ${analysis.imagesWithoutAlt} (${analysis.imagesWithoutAltPercentage}%)`;
+    document.getElementById('wordCount').textContent = `Ilość słów: ${analysis.wordCount}`;
+    document.getElementById('charCount').textContent = `Ilość znaków: ${analysis.charCount}`;
 
     document.getElementById('canonical').textContent = analysis.canonicalTag || 'Brak';
 
@@ -85,23 +69,23 @@ function updateContent(analysis) {
         hreflangsDiv.textContent = 'Brak zaimplementowanych Hreflangów';
     }
 
-    let headersSummaryDiv = document.getElementById('headersSummary');
-    headersSummaryDiv.innerHTML = '';
-    Object.keys(analysis.headersCount).forEach(headerType => {
-        let headerCount = analysis.headersCount[headerType];
-        if (headerCount > 0) {
-            let listItem = document.createElement('li');
-            listItem.textContent = `${headerType}: ${headerCount}`;
-            headersSummaryDiv.appendChild(listItem);
-        }
+    let headersSummary = document.getElementById('headersSummary');
+    let headerCounts = analysis.headers.reduce((counts, header) => {
+        counts[header.type] = (counts[header.type] || 0) + 1;
+        return counts;
+    }, {});
+    Object.keys(headerCounts).forEach(headerType => {
+        let p = document.createElement('p');
+        p.textContent = `${headerType} - ${headerCounts[headerType]}`;
+        headersSummary.appendChild(p);
     });
 
-    let headersListDiv = document.getElementById('headersList');
-    headersListDiv.innerHTML = '';
+    let headersList = document.getElementById('headersList');
+    headersList.innerHTML = '';
     analysis.headers.forEach(header => {
         let listItem = document.createElement('li');
         listItem.textContent = `${header.type}: ${header.text}`;
-        headersListDiv.appendChild(listItem);
+        headersList.appendChild(listItem);
     });
 }
 
@@ -118,8 +102,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 });
 
 function copyHeadersToClipboard() {
-    let headersListDiv = document.getElementById('headersList');
-    let headersText = headersListDiv.innerText;
+    let headersList = document.getElementById('headersList');
+    let headersText = headersList.innerText;
     navigator.clipboard.writeText(headersText)
         .then(() => alert('Skopiowano nagłówki do schowka!'))
         .catch(err => console.error('Błąd kopiowania', err));
