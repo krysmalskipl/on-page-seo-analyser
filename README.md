@@ -1,9 +1,7 @@
 <!-- @format -->
 
-Quick start:
+# Quick start:
 
-```
-Upload plugin into our Google Chrome Browser in Developer Mode.
-Enjoy.
+## Upload plugin into our Google Chrome Browser in Developer Mode.
 
-```
+### Enjoy.
