@@ -2,6 +2,6 @@
 
 # Quick start:
 
-## Upload plugin into our Google Chrome Browser in Developer Mode.
+## Upload plugin into your Google Chrome Browser in Developer Mode.
 
 ### Enjoy.
