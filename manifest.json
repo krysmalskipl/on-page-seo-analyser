@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "On-Page SEO Analyzer",
+    "description": "Simple On-Page SEO Analyzer created by Krysmalski.pl. Just simply load a page you want to analyse and click on the plugin icon.",
+    "version": "1.0",
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+    }
+}

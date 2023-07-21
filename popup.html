@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SEO Analyser Tool by Krysmalski.pl</title>
+    <style>
+        body {
+            width: 400px;
+            height: 600px;
+            padding: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f6f8fa;
+            color: #333;
+        }
+
+        h1 {
+            color: #007BFF;
+            font-size: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #343a40;
+            margin: 20px 0 10px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: #343a40;
+            margin: 10px 0;
+        }
+
+        p,
+        li {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .section {
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Analiza SEO</h1>
+    <div class="section">
+        <h2 id="title"></h2>
+        <p id="titleContent"></p>
+    </div>
+    <div class="section">
+        <h2 id="metaDescription"></h2>
+        <p id="metaDescriptionContent"></p>
+    </div>
+    <div class="section">
+        <h2>Canonical Tag</h2>
+        <p id="canonical"></p>
+    </div>
+    <div class="section">
+        <h2>Hreflangs</h2>
+        <div id="hreflangs"></div>
+    </div>
+    <div class="section">
+        <h2>Google Analytics</h2>
+        <p id="analytics"></p>
+    </div>
+    <div class="section">
+        <h2>Google Tag Manager</h2>
+        <p id="tagManager"></p>
+    </div>
+    <div class="section">
+        <h2>Images</h2>
+        <p id="totalImages"></p>
+        <p id="imagesWithAlt"></p>
+        <p id="imagesWithoutAlt"></p>
+    </div>
+    <div class="section">
+        <h2>Podsumowanie nagłówków</h2>
+        <ul id="headersSummary"></ul>
+    </div>
+    <div class="section">
+        <h2>Struktura nagłówków</h2>
+        <ul id="headersList"></ul>
+        <button id="copyHeaders">Kopiuj</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
