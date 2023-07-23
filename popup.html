@@ -4,91 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>SEO Analyser Tool by Krysmalski.pl</title>
-    <style>
-        body {
-            width: 400px;
-            height: 600px;
-            padding: 10px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f6f8fa;
-            color: #333;
-        }
-
-        h1 {
-            color: #007BFF;
-            font-size: 24px;
-        }
-
-        h2 {
-            font-size: 20px;
-            color: #343a40;
-            margin: 20px 0 10px;
-        }
-
-        h3 {
-            font-size: 16px;
-            color: #343a40;
-            margin: 10px 0;
-        }
-
-        p,
-        li {
-            font-size: 14px;
-            color: #6c757d;
-            line-height: 1.2;
-        }
-
-        p {
-            margin: 0;
-            padding: 0;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .section {
-            border-bottom: 1px solid #dee2e6;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-        }
-
-        li.header-H1 {
-            margin-left: 0px;
-        }
-
-        li.header-H2 {
-            margin-left: 10px;
-        }
-
-        li.header-H3 {
-            margin-left: 20px;
-        }
-
-        li.header-H4 {
-            margin-left: 30px;
-        }
-
-        li.header-H5 {
-            margin-left: 40px;
-        }
-
-        li.header-H6 {
-            margin-left: 50px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <h1>Analiza SEO</h1>
-    <button id="goToAhrefs">Ahrefs</button>
-    <button id="goToPagespeed">PageSpeed</button>
-    <button id="goToSchema">Schema</button>
+    <button class="btn btn-orange" id="goToAhrefs">Ahrefs</button>
+    <button class="btn" id="goToPagespeed">PageSpeed</button>
+    <button class="btn btn-grey" id="goToSchema">Schema</button>
     <div class="section">
         <h2 id="title"></h2>
         <p id="titleContent"></p>
@@ -131,7 +54,7 @@
     <div class="section">
         <h2>Struktura nagłówków</h2>
         <ul id="headersList"></ul>
-        <button id="copyHeaders">Kopiuj</button>
+        <button class="btn" id="copyHeaders">Kopiuj</button>
     </div>
 
     <script src="popup.js"></script>
