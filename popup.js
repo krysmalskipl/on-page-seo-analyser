@@ -3,14 +3,12 @@ function inContent() {
     let metaDescription = document.querySelector("meta[name='description']")
         ? document.querySelector("meta[name='description']").getAttribute('content')
         : 'Brak opisu';
+
     let headers = [];
-    for (let i = 1; i <= 6; i++) {
-        let headerElements = Array.from(document.getElementsByTagName(`H${i}`)).map(h => ({
-            type: `H${i}`,
-            text: h.innerText
-        }));
-        headers = headers.concat(headerElements);
-    }
+    let allHeaders = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    allHeaders.forEach(header => {
+        headers.push({ type: header.tagName, text: header.innerText });
+    });
 
     let canonicalTag = document.querySelector("link[rel='canonical']")
         ? document.querySelector("link[rel='canonical']").getAttribute('href')
@@ -35,6 +33,56 @@ function inContent() {
 
     return { title, metaDescription, headers, canonicalTag, hasGoogleAnalytics, hasGoogleTagManager, hasHttps, totalImages, imagesWithAlt, imagesWithoutAlt, imagesWithoutAltPercentage, hreflangs, charCount, wordCount };
 }
+
+let goToAhrefs = document.getElementById("goToAhrefs");
+
+goToAhrefs.addEventListener("click", function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let activeTab = tabs[0]
+        console.log(activeTab.url);
+        let modifiedUrl = activeTab.url
+        console.log(modifiedUrl);
+        // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
+        let finalUrl = `https://app.ahrefs.com/v2-site-explorer/overview?mode=prefix&target=${modifiedUrl}`;
+        // Otwórz nową kartę z zaktualizowanym adresem URL
+        window.open(finalUrl, '_blank');
+
+    })
+    // console.log('going to ahrefs EOT')
+})
+
+let goToPagespeed = document.getElementById("goToPagespeed");
+
+goToPagespeed.addEventListener("click", function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let activeTab = tabs[0]
+        console.log(activeTab.url);
+        let modifiedUrl = activeTab.url
+        console.log(modifiedUrl);
+        // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
+        let finalUrl = `https://developers.google.com/speed/pagespeed/insights/?url=${modifiedUrl}`;
+        // Otwórz nową kartę z zaktualizowanym adresem URL
+        window.open(finalUrl, '_blank');
+
+    })
+    // console.log('going to ahrefs EOT')
+})
+let goToSchema = document.getElementById("goToSchema");
+
+goToSchema.addEventListener("click", function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let activeTab = tabs[0]
+        console.log(activeTab.url);
+        let modifiedUrl = activeTab.url
+        console.log(modifiedUrl);
+        // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
+        let finalUrl = `https://search.google.com/test/rich-results?url=${modifiedUrl}`;
+        // Otwórz nową kartę z zaktualizowanym adresem URL
+        window.open(finalUrl, '_blank');
+
+    })
+    // console.log('going to ahrefs EOT')
+})
 
 function updateContent(analysis) {
     document.getElementById('title').textContent = `Title - ${analysis.title.length} znaków`;
@@ -70,6 +118,7 @@ function updateContent(analysis) {
     }
 
     let headersSummary = document.getElementById('headersSummary');
+    headersSummary.innerHTML = '';
     let headerCounts = analysis.headers.reduce((counts, header) => {
         counts[header.type] = (counts[header.type] || 0) + 1;
         return counts;
@@ -85,9 +134,11 @@ function updateContent(analysis) {
     analysis.headers.forEach(header => {
         let listItem = document.createElement('li');
         listItem.textContent = `${header.type}: ${header.text}`;
+        listItem.classList.add(`header-${header.type}`);
         headersList.appendChild(listItem);
     });
 }
+
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.scripting.executeScript(
@@ -111,3 +162,5 @@ function copyHeadersToClipboard() {
 
 let copyHeadersButton = document.getElementById('copyHeaders');
 copyHeadersButton.addEventListener('click', copyHeadersToClipboard);
+
+
