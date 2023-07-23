@@ -1,6 +1,6 @@
 <!-- @format -->
 
-![On-Page SEO Analyzer Logo](https://github.com/krysmalskipl/seo-analysis-plugin/icon.png)
+![On-Page SEO Analyzer Logo](icon.png)
 
 # About the tool
 
@@ -22,7 +22,7 @@ Download the extension files from the GitHub repository and extract them into a 
 
 Open the Google Chrome browser and go to the Extensions page. You can reach this page by clicking on the three-dot menu at the top-right corner, then go to More Tools > Extensions, or you can just type `chrome://extensions/` in the address bar and press `Enter`.
 
-![Developer mode Switch](https://github.com/krysmalskipl/seo-analysis-plugin/switch.png)
+![Developer mode Switch](switch.png)
 
 On the Extensions page, you will see a toggle switch in the top right corner labeled "Developer Mode". Make sure this switch is turned on.
 
