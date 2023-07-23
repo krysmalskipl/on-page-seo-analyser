@@ -19,9 +19,10 @@ function inContent() {
 
     let images = Array.from(document.getElementsByTagName('img'));
     let totalImages = images.length;
-    let imagesWithAlt = images.filter(img => img.hasAttribute('alt')).length;
-    let imagesWithoutAlt = totalImages - imagesWithAlt;
+    let imagesWithoutAlt = images.filter(img => !img.alt || img.alt.trim() === "").length;
+    let imagesWithAlt = totalImages - imagesWithoutAlt;
     let imagesWithoutAltPercentage = totalImages > 0 ? (imagesWithoutAlt / totalImages * 100).toFixed(2) : 0;
+
 
     let hreflangs = Array.from(document.querySelectorAll("link[rel='alternate']"))
         .filter(link => link.hasAttribute('hreflang'))
@@ -83,7 +84,7 @@ function updateContent(analysis) {
     document.getElementById('metaDescriptionContent').textContent = analysis.metaDescription;
     document.getElementById('totalImages').textContent = `Total images: ${analysis.totalImages}`;
     document.getElementById('imagesWithAlt').textContent = `Images with 'alt': ${analysis.imagesWithAlt}`;
-    document.getElementById('imagesWithoutAlt').textContent = `Images without 'alt': ${analysis.imagesWithoutAlt} (${analysis.imagesWithoutAltPercentage}%)`;
+    document.getElementById('imagesWithoutAlt').textContent = `Images without or with empty 'alt': ${analysis.imagesWithoutAlt} (${analysis.imagesWithoutAltPercentage}%)`;
     document.getElementById('wordCount').textContent = `Ilość słów: ${analysis.wordCount}`;
     document.getElementById('charCount').textContent = `Ilość znaków: ${analysis.charCount}`;
 
