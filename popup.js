@@ -44,11 +44,9 @@ goToAhrefs.addEventListener("click", function () {
         console.log(modifiedUrl);
         // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
         let finalUrl = `https://app.ahrefs.com/v2-site-explorer/overview?mode=prefix&target=${modifiedUrl}`;
-        // Otwórz nową kartę z zaktualizowanym adresem URL
         window.open(finalUrl, '_blank');
 
     })
-    // console.log('going to ahrefs EOT')
 })
 
 let goToPagespeed = document.getElementById("goToPagespeed");
@@ -59,13 +57,10 @@ goToPagespeed.addEventListener("click", function () {
         console.log(activeTab.url);
         let modifiedUrl = activeTab.url
         console.log(modifiedUrl);
-        // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
         let finalUrl = `https://developers.google.com/speed/pagespeed/insights/?url=${modifiedUrl}`;
-        // Otwórz nową kartę z zaktualizowanym adresem URL
         window.open(finalUrl, '_blank');
 
     })
-    // console.log('going to ahrefs EOT')
 })
 let goToSchema = document.getElementById("goToSchema");
 
@@ -75,13 +70,10 @@ goToSchema.addEventListener("click", function () {
         console.log(activeTab.url);
         let modifiedUrl = activeTab.url
         console.log(modifiedUrl);
-        // let encodedModifiedUrl = encodeURIComponent(modifiedUrl);
         let finalUrl = `https://search.google.com/test/rich-results?url=${modifiedUrl}`;
-        // Otwórz nową kartę z zaktualizowanym adresem URL
         window.open(finalUrl, '_blank');
 
     })
-    // console.log('going to ahrefs EOT')
 })
 
 function updateContent(analysis) {
