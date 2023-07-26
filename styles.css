@@ -1,41 +1,48 @@
 /** @format */
+:root {
+  --accent-color: #2f3032;
+  --secondary-color: #007bff;
+  --border-section-color: #007bff;
+  --tab-font-color: #fff;
+  --headings-color: #fff;
+}
 
 body {
   width: 400px;
   height: 600px;
-  padding: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f6f8fa;
-  color: #333;
+  padding: 0px;
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
   margin: 0;
-  padding: 0px 10px;
+  padding: 0px 0px;
   box-sizing: border-box;
 }
 
-h1 {
-  color: #007bff;
-  font-size: 24px;
-  margin: 0;
-  padding: 0;
-  padding-bottom: 10px;
+.container {
+  padding: 0 20px;
 }
 
 h2 {
-  font-size: 20px;
-  color: #343a40;
+  font-size: 15px;
+  color: var(--secondary-color);
   margin: 20px 0 10px;
 }
 
+.title {
+  font-size: 18px;
+  color: #007bff;
+}
 h3 {
   font-size: 16px;
-  color: #343a40;
+  color: var(--secondary-color);
   margin: 10px 0;
 }
 
 p,
 li {
-  font-size: 14px;
-  color: #6c757d;
+  font-size: 13px;
+  color: #ffffff;
   line-height: 1.2;
 }
 
@@ -54,11 +61,23 @@ ul {
 }
 
 .section {
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--border-section-color);
   margin-bottom: 20px;
   padding-bottom: 10px;
 }
 
+.section:last-child {
+  border-bottom: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--headings-color);
+}
 li.header-H1 {
   margin-left: 0px;
 }
@@ -138,11 +157,62 @@ li.header-H6 {
   justify-content: space-around;
   margin: 15px 0;
   padding: 0;
-  border-top: 1px solid #dee2e6;
-  border-bottom: 1px solid #dee2e6;
+  border-top: 1px solid var(--border-section-color);
+  border-bottom: 1px solid var(--border-section-color);
 }
 
 #menu img {
   width: 25px;
   height: 25px;
+}
+
+#Tab2 {
+  display: none;
+}
+#Tab3 {
+  display: none;
+}
+
+ol {
+  padding: 0;
+  margin: 0;
+}
+
+#keywordAnalysis {
+  padding: 0 20px;
+}
+
+.tab {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  background: var(--accent-color);
+  padding: 0px 0;
+}
+
+.tab button {
+  flex: 1;
+  background-color: var(--accent-color);
+  color: var(--tab-font-color);
+  /* float: left; */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.tab button:hover {
+  background-color: var(--secondary-color);
+  color: var(--tab-font-color);
+}
+
+.tab button.active {
+  background-color: var(--secondary-color);
+  color: var(--tab-font-color);
 }

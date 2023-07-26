@@ -4,73 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <title>On-Page SEO Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>On-Page SEO Analyzer</h1>
-    <div id="menu">
-        <a class="external-link" href="https://search.google.com/search-console/about"><img src="/img/gsc.png" alt="GSC"
-                title="GSC"></a>
-        <a class="external-link" href="https://analytics.google.com/analytics/web/#/"><img src="/img/ga.svg" title="GA"
-                alt="GSC"></a>
-        <a class="external-link" href="https://tagmanager.google.com/"><img src="/img/gtm.svg" alt="GTM"
-                title="GTM"></a>
-        <a class="external-link" href="https://app.surferseo.com/"><img src="/img/surfer.svg" title="Surfer SEO"
-                alt="Surfer SEO"></a>
-        <a class="external-link" href="https://lookerstudio.google.com/overview"><img src="/img/looker.png"
-                title="Looker" alt="Looker"></a>
+    <div class="tab">
+        <button class="tablinks" id="defaultOpen">Data</button>
+        <button class="tablinks" id="tab2">Links</button>
+        <button class="tablinks" id="tab3">Headings</button>
+        <button class="tablinks" id="tab4">Content</button>
     </div>
-    <div class="btn-container">
-        <button class="btn btn-orange" id="goToAhrefs">Ahrefs</button>
-        <button class="btn" id="goToPagespeed">PageSpeed</button>
-        <button class="btn btn-grey" id="goToSchema">Schema</button>
-    </div>
-    <div class="section">
-        <h2 id="title"></h2>
-        <p id="titleContent"></p>
-    </div>
-    <div class="section">
-        <h2 id="metaDescription"></h2>
-        <p id="metaDescriptionContent"></p>
-    </div>
-    <div class="section">
-        <h2>Ilość słów i znaków</h2>
-        <p id="wordCount"></p>
-        <p id="charCount"></p>
-    </div>
-    <div class="section">
-        <h2>Canonical Tag</h2>
-        <p id="canonical"></p>
-    </div>
-    <div class="section">
-        <h2>Hreflangs</h2>
-        <div id="hreflangs"></div>
-    </div>
-    <div class="section">
-        <h2>Google Analytics</h2>
-        <p id="analytics"></p>
-    </div>
-    <div class="section">
-        <h2>Google Tag Manager</h2>
-        <p id="tagManager"></p>
-    </div>
-    <div class="section">
-        <h2>Images</h2>
-        <p id="totalImages"></p>
-        <p id="imagesWithAlt"></p>
-        <p id="imagesWithoutAlt"></p>
-    </div>
-    <div class="section">
-        <h2>Podsumowanie nagłówków</h2>
-        <ul id="headersSummary"></ul>
-    </div>
-    <div class="section">
-        <h2>Struktura nagłówków</h2>
-        <ul id="headersList"></ul>
-        <button class="btn" id="copyHeaders">Kopiuj</button>
-    </div>
+    <div class="container">
+        <h1 class="title">On-Page SEO Analyzer</h1>
 
+        <div id="Tab1" class="tabcontent">
+            <div class="section">
+                <h2 id="title"></h2>
+                <p id="titleContent"></p>
+            </div>
+            <div class="section">
+                <h2 id="metaDescription"></h2>
+                <p id="metaDescriptionContent"></p>
+            </div>
+            <div class="section">
+                <h2>Meta-Robots Tag</h2>
+                <p id="metaRobots"></p>
+            </div>
+            <div class="section">
+                <h2>X-Robots-Tag</h2>
+                <p id="xRobotsNoindex"></p>
+            </div>
+            <div class="section">
+                <h2>Canonical Tag</h2>
+                <p id="canonical"></p>
+            </div>
+            <div class="section">
+                <h2>Hreflangs</h2>
+                <p id="hreflangs"></p>
+            </div>
+            <div class="section">
+                <h2>Google Analytics</h2>
+                <p id="analytics"></p>
+            </div>
+            <div class="section">
+                <h2>Google Tag Manager</h2>
+                <p id="tagManager"></p>
+            </div>
+            <div class="section">
+                <h2>Images</h2>
+                <p id="totalImages"></p>
+                <p id="imagesWithAlt"></p>
+                <p id="imagesWithoutAlt"></p>
+            </div>
+        </div>
+        <div id="Tab2" class="tabcontent">
+            <div id="menu">
+                <a class="external-link" href="https://search.google.com/search-console/about"><img src="/img/gsc.png"
+                        alt="GSC" title="GSC"></a>
+                <a class="external-link" href="https://analytics.google.com/analytics/web/#/"><img src="/img/ga.svg"
+                        title="GA" alt="GSC"></a>
+                <a class="external-link" href="https://tagmanager.google.com/"><img src="/img/gtm.svg" alt="GTM"
+                        title="GTM"></a>
+                <a class="external-link" href="https://app.surferseo.com/"><img src="/img/surfer.svg" title="Surfer SEO"
+                        alt="Surfer SEO"></a>
+                <a class="external-link" href="https://lookerstudio.google.com/overview"><img src="/img/looker.png"
+                        title="Looker" alt="Looker"></a>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-orange" id="goToAhrefs">Ahrefs</button>
+                <button class="btn" id="goToPagespeed">PageSpeed</button>
+                <button class="btn btn-grey" id="goToSchema">Schema</button>
+            </div>
+        </div>
+        <div id="Tab3" class="tabcontent">
+
+            <div class="section">
+                <h2>Headings summary</h2>
+                <ul id="headersSummary"></ul>
+            </div>
+            <div class="section">
+                <h2>Headings structure</h2>
+                <ul id="headersList"></ul>
+                <button class="btn" id="copyHeaders">Copy headings</button>
+            </div>
+        </div>
+        <div id="Tab4" class="tabcontent">
+            <div class="section">
+                <h2>Words and chars amount</h2>
+                <p id="wordCount"></p>
+                <p id="charCount"></p>
+            </div>
+            <div class="section">
+                <h2>Keywords density (up to 20)</h2>
+                <div id="keywordAnalysis">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="keywords.js"></script>
     <script src="popup.js"></script>
 </body>
 
