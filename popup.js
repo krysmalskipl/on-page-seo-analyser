@@ -1,3 +1,4 @@
+
 function inContent() {
     let title = document.querySelector("title").innerText;
     let metaDescription = document.querySelector("meta[name='description']")
@@ -13,7 +14,8 @@ function inContent() {
     let canonicalTag = document.querySelector("link[rel='canonical']")
         ? document.querySelector("link[rel='canonical']").getAttribute('href')
         : 'Brak znacznika kanonicznego';
-    let hasGoogleAnalytics = !!document.querySelector("script[src*='google-analytics.com']");
+    let hasGoogleAnalytics = !!document.querySelector("script[src*='google-analytics.com']") || Array.from(document.scripts).some(script => script.textContent.includes('gtag('));
+
     let hasGoogleTagManager = !!document.querySelector("script[src*='googletagmanager.com']");
     let hasHttps = window.location.protocol === "https:";
 
@@ -32,7 +34,13 @@ function inContent() {
     let charCount = text.length;
     let wordCount = text.split(/\s+/).length;
 
-    return { title, metaDescription, headers, canonicalTag, hasGoogleAnalytics, hasGoogleTagManager, hasHttps, totalImages, imagesWithAlt, imagesWithoutAlt, imagesWithoutAltPercentage, hreflangs, charCount, wordCount };
+
+    let noIndexMetaTag = Array.from(document.getElementsByTagName('meta')).find(
+        meta => meta.getAttribute('name') === 'robots' && meta.getAttribute('content').includes('noindex')
+    );
+    let hasNoIndexMetaTag = noIndexMetaTag ? 'Tag noindex found: ' + noIndexMetaTag.outerHTML : 'No meta robots noindex found.';
+
+    return { title, metaDescription, headers, canonicalTag, hasGoogleAnalytics, hasGoogleTagManager, hasHttps, totalImages, imagesWithAlt, imagesWithoutAlt, imagesWithoutAltPercentage, hreflangs, charCount, wordCount, hasNoIndexMetaTag };
 }
 
 let goToAhrefs = document.getElementById("goToAhrefs");
@@ -78,25 +86,28 @@ goToSchema.addEventListener("click", function () {
 })
 
 function updateContent(analysis) {
-    document.getElementById('title').textContent = `Title - ${analysis.title.length} znaków`;
+    document.getElementById('metaRobots').textContent = analysis.hasNoIndexMetaTag;
+
+
+    document.getElementById('title').textContent = `Title - ${analysis.title.length} chars`;
     document.getElementById('titleContent').textContent = analysis.title;
-    document.getElementById('metaDescription').textContent = `Meta Description - ${analysis.metaDescription.length} znaków`;
+    document.getElementById('metaDescription').textContent = `Meta Description - ${analysis.metaDescription.length} chars`;
     document.getElementById('metaDescriptionContent').textContent = analysis.metaDescription;
     document.getElementById('totalImages').textContent = `Total images: ${analysis.totalImages}`;
     document.getElementById('imagesWithAlt').textContent = `Images with 'alt': ${analysis.imagesWithAlt}`;
     document.getElementById('imagesWithoutAlt').textContent = `Images without or with empty 'alt': ${analysis.imagesWithoutAlt} (${analysis.imagesWithoutAltPercentage}%)`;
-    document.getElementById('wordCount').textContent = `Ilość słów: ${analysis.wordCount}`;
-    document.getElementById('charCount').textContent = `Ilość znaków: ${analysis.charCount}`;
+    document.getElementById('wordCount').textContent = `Words: ${analysis.wordCount}`;
+    document.getElementById('charCount').textContent = `Characters: ${analysis.charCount}`;
 
     document.getElementById('canonical').textContent = analysis.canonicalTag || 'Brak';
 
     document.getElementById('analytics').textContent = analysis.hasGoogleAnalytics
-        ? 'Strona posiada wdrożony kod Google Analytics.'
-        : 'Strona nie posiada wdrożonego kodu Google Analytics.';
+        ? 'Google Analytics tag is implemented.'
+        : 'Google Analytics tag is not implemented.';
 
     document.getElementById('tagManager').textContent = analysis.hasGoogleTagManager
-        ? 'Strona posiada wdrożony kod Google Tag Manager.'
-        : 'Strona nie posiada wdrożonego kodu Google Tag Manager.';
+        ? 'Google Tag Manager tag is implemented.'
+        : 'Google Tag Manager tag is not implemented.';
 
     let hreflangsDiv = document.getElementById('hreflangs');
     hreflangsDiv.innerHTML = '';
@@ -107,7 +118,7 @@ function updateContent(analysis) {
             hreflangsDiv.appendChild(p);
         });
     } else {
-        hreflangsDiv.textContent = 'Brak zaimplementowanych Hreflangów';
+        hreflangsDiv.textContent = 'Hreflang Tag is not implemented';
     }
 
     let headersSummary = document.getElementById('headersSummary');
@@ -158,14 +169,131 @@ copyHeadersButton.addEventListener('click', copyHeadersToClipboard);
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    var links = document.getElementsByClassName('external-link');
-    for (var i = 0; i < links.length; i++) {
+    let links = document.getElementsByClassName('external-link');
+    for (let i = 0; i < links.length; i++) {
         (function () {
-            var ln = links[i];
-            var location = ln.href;
+            let ln = links[i];
+            let location = ln.href;
             ln.onclick = function () {
                 chrome.tabs.create({ active: true, url: location });
             };
         })();
     }
+});
+
+// Robots 
+
+// receive data from background.js start 
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.runtime.sendMessage(
+        { action: "getNoindexInfo", url: tabs[0].url },
+        function (response) {
+            if (chrome.runtime.lastError) {
+                document.getElementById('xRobotsNoindex').textContent = 'Error: ' + chrome.runtime.lastError.message;
+            } else {
+                document.getElementById('xRobotsNoindex').textContent = response.noindexInfo || 'No X-Robots-Tag noindex found.';
+            }
+        }
+    );
+});
+
+
+// receive data from background.js end 
+
+
+function checkMetaRobots() {
+    let metaTags = document.getElementsByTagName('meta');
+    for (let i = 0; i < metaTags.length; i++) {
+        if (metaTags[i].getAttribute('name') === 'robots') {
+            return metaTags[i].outerHTML;
+        }
+    }
+    return 'Meta-Robots Tag is not implemented.';
+}
+
+
+window.onload = function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.scripting.executeScript(
+            {
+                target: { tabId: tabs[0].id },
+                function: checkMetaRobots,
+            },
+            function (result) {
+                let metaRobotsElement = document.getElementById('metaRobots');
+                let ul = document.createElement('ul');
+
+                // Add meta robots info
+                let li = document.createElement('li');
+                li.textContent = result[0].result;
+                ul.appendChild(li);
+
+                metaRobotsElement.textContent = '';
+                metaRobotsElement.appendChild(ul);
+            }
+        );
+    });
+
+};
+
+
+
+
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.runtime.sendMessage(
+        { action: "getNoindexInfo", url: tabs[0].url },
+        function (response) {
+            if (chrome.runtime.lastError) {
+                document.getElementById('xRobotsNoindex').textContent = 'Error: ' + chrome.runtime.lastError.message;
+            } else {
+                document.getElementById('xRobotsNoindex').textContent = response.noindexInfo || ' X-Robots-Tag has not been found.';
+            }
+        }
+    );
+});
+
+
+
+// Opening the tabs 
+
+document.addEventListener('DOMContentLoaded', function () {
+    let defaultOpen = document.getElementById('defaultOpen');
+    let tab2 = document.getElementById('tab2');
+    let tab3 = document.getElementById('tab3');
+    let tab4 = document.getElementById('tab4');
+
+    defaultOpen.addEventListener('click', function (event) {
+        openTab(event, 'Tab1');
+    });
+
+    tab2.addEventListener('click', function (event) {
+        openTab(event, 'Tab2');
+    });
+    tab3.addEventListener('click', function (event) {
+        openTab(event, 'Tab3');
+    });
+
+    tab4.addEventListener('click', function (event) {
+        openTab(event, 'Tab4');
+    });
+
+});
+
+
+function openTab(evt, tabName) {
+    let i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById("defaultOpen").click();
 });
